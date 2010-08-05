@@ -21,44 +21,50 @@
 
 *********************************************************************************/
 
+
 function gohome() {
-    $_SESSION["scan"] = "scan";
-    echo "<script type=\"text/javascript\">";
-    echo "window.top.location = '/pos.php'";
-    echo "</script>\n";
+	$_SESSION["scan"] = "scan";
+	echo "<SCRIPT type=\"text/javascript\">";
+	echo "window.top.location = 'pos.php'";
+	// echo "window.top.frames(1).location = 'pos2.php';\n";
+	// echo "window.top.frames(0).location = 'input.php';\n";
+	echo "</SCRIPT>\n";
 }
 
 function maindisplay($location) {
-    $_SESSION["display"] = $location;
-    echo "<script  type=\"text/javascript\">";
-    echo "window.top.location = '/display.php'";
-    echo "</script>";
+	$_SESSION["display"] = $location;
+	echo "<SCRIPT  type=\"text/javascript\">";
+	echo "window.top.location = 'display.php'";
+	echo "</SCRIPT>";
 }
 
 function msgscreen($msg) {
-    $_SESSION["boxMsg"] = $msg;
-    echo "<script  type=\"text/javascript\">";
-    echo "window.top.location = '/msgscreen.php'";
-    echo "</script>";
+	$_SESSION["boxMsg"] = $msg;
+	echo "<SCRIPT  type=\"text/javascript\">";
+	echo "window.top.location = 'msgscreen.php'";
+	echo "</SCRIPT>";
 }
 
 function inputBox() {
-    echo "<script  type=\"text/javascript\">";
-    echo "window.top.frames[0].location = '/input.php'";
-    echo "</script>";
+	echo "<SCRIPT  type=\"text/javascript\">";
+	echo "window.top.frames[0].location = 'input.php'";
+	echo "</SCRIPT>";
 }
 
 function noinputBox() {
-    echo "<script type=\"text/javascript\">";
-    echo "window.top.frames[0].location = '/noinput.php'";
-    echo "</script>";
+	echo "<SCRIPT type=\"text/javascript\">";
+	echo "window.top.frames[0].location = 'noinput.php'";
+	echo "</SCRIPT>";
 }
 
 function returnHome() {
-    $_SESSION["scan"] = "scan";
-    echo "<script type=\"text/javascript\">";
-    echo "window.top.frames[1].location = '/pos2.php';\n";
-    echo "window.top.frames[0].location = '/input.php';\n";
-    echo "</script>\n";
+
+	$_SESSION["scan"] = "scan";
+	echo "<SCRIPT type=\"text/javascript\">";
+	echo "window.top.frames[1].location = 'pos2.php';\n";
+	echo "window.top.frames[0].location = 'input.php';\n";
+	echo "</SCRIPT>\n";
+
 }
 
+?>

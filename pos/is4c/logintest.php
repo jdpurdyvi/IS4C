@@ -20,14 +20,15 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 *********************************************************************************/
+ // session_start();
 
 loadglobalvalues();
 
 if ($_SESSION["LoggedIn"] == 0) {
-    header("Location:/login.php");
+	header("Location:/login.php");
 }
 else {
-    header("Location:/loginb.php");
+	header("Location:/loginb.php");
 }
 
 ?>

@@ -20,11 +20,8 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 *********************************************************************************/
-?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-    </head>
-    <body tabindex='-10'>
-    </body>
-</html>
+ // session_start(); ?>
+<HEAD>
+</HEAD>
+<BODY tabindex='-10'>
+</BODY>

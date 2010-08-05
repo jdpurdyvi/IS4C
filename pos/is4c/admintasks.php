@@ -27,56 +27,57 @@ if (!function_exists("checksuspended")) include("special.php");
 if (!function_exists("tenderReport")) include("tenderReport.php");
 
 if (isset($_POST["selectlist"])) {
-    $admin_task = strtoupper(trim($_POST["selectlist"]));
+	$admin_task = strtoupper(trim($_POST["selectlist"]));
 }
 else {
-    $admin_task = "";
+	$admin_task = "";
 }
 
 if ($admin_task == "SUSPEND") {
-    getsubtotals();
-    if ($_SESSION["LastID"] == 0) {
-        msgscreen("no transaction in progress");
-    }
-    else {
-        suspendorder();
-    }
+	getsubtotals();
+	if ($_SESSION["LastID"] == 0) {
+		msgscreen("no transaction in progress");
+	}
+	else {
+		suspendorder();
+	}
 }
 elseif ($admin_task == "RESUME") {
-    getsubtotals();
-    if ($_SESSION["LastID"] != 0) {
-        msgscreen("transaction in progress");
-    }
-    elseif (checksuspended() == 0) {
+	getsubtotals();
+	if ($_SESSION["LastID"] != 0) {
+		msgscreen("transaction in progress");
+	}
+	elseif (checksuspended() == 0) {
 
 
-        msgscreen("no suspended transaction");
-    }
-    else {
-        echo "<SCRIPT type=\"text/javascript\">\n"
-            ."window.location='/suspendedlist.php'"
-            ."</SCRIPT>";
-    }
+		msgscreen("no suspended transaction");
+	}
+	else {
+		echo "<SCRIPT type=\"text/javascript\">\n"
+			."window.location='/suspendedlist.php'"
+			."</SCRIPT>";
+	}
 }
 elseif ($admin_task == "TR") {
-    getsubtotals();
-    if ($_SESSION["LastID"] != 0) {
-            msgscreen("transaction in progress");
-    }
-    elseif ($_SESSION["standalone"] != 0) {?>
-        <script type="text/javascript">
-            alert('Unable to contact server.  Please make sure both the lane and server are connected to the network and the server is powered on.  You can check connectivity to the server by looking for the gren connection icon next to the date and time field.');
-        </script>
-    <?php
-        gohome();
-    }
-    else {
-        tenderReport();
-    }
+
+        getsubtotals();
+        if ($_SESSION["LastID"] != 0) {
+                msgscreen("transaction in progress");
+        }
+	elseif  (suspendedCheck() != 0)     {
+		$message = suspendedCheck();
+		msgscreen("you have suspended ". $message ." transactions. please resolve these before ending your shift");
+	}
+	else {
+
+		tenderReport();
+//		gohome();
+	}
 }
 
 elseif ($admin_task == "" || !$admin_task || strlen($admin_task) < 1) {
-    $_SESSION["msgrepeat"] = 0;
-    gohome();
+	$_SESSION["msgrepeat"] = 0;
+	gohome();
 }
 
+?>
