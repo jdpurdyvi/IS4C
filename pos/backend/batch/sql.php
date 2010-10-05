@@ -104,6 +104,7 @@
 		}
 	}	
 	
+	// Why is this listBatch? Have I alredy forgotten?
 	function listBatch(&$backoffice) {
 		// For now, just mark a batchHeader as active=0 to delete it
 		$link=mysql_connect($_SESSION["mServer"], $_SESSION["mUser"], $_SESSION["mPass"]);
