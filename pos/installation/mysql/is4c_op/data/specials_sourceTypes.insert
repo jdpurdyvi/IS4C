@@ -1,0 +1,11 @@
+USE  `is4c_op`;
+
+INSERT INTO `specials_sourceTypes` (`id`, `name`) VALUES
+(1, 'CAP'),
+(2, 'Direct'),
+(3, 'Flyer'),
+(4, 'HA'),
+(5, 'TPR'),
+(6, 'Turnover'),
+(7, 'Volume'),
+(8, 'Normal');

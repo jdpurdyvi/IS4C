@@ -1,0 +1,6 @@
+USE  `is4c_op`;
+
+INSERT INTO `specials_posTypes` (`id`, `name`) VALUES
+(1, 'Normal'),
+(2, 'Member Special');
+
