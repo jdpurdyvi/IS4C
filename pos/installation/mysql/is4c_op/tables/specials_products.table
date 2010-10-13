@@ -1,0 +1,24 @@
+USE `is4c_op`;
+
+CREATE TABLE `specials_products` (
+  `upc` varchar(13) NOT NULL,
+  `specials_header_id` int(10) unsigned NOT NULL,
+  `specials_sourceType_id` smallint(5) unsigned NOT NULL,
+  `vendor_id` int(10) unsigned DEFAULT NULL COMMENT 'Vendor id may not match products table. Sometimes special pricing on a product comes from a different vendor.',
+  `labelflag` smallint(6) DEFAULT NULL,
+  `order` decimal(8,2) DEFAULT NULL,
+  `discountgiven` decimal(4,2) DEFAULT NULL,
+  `discountreceived` decimal(4,2) DEFAULT NULL,
+  `special_price` decimal(10,2) NOT NULL,
+  `normal_price` decimal(10,2) DEFAULT NULL,
+  `special_method` smallint(6) unsigned NOT NULL,
+  `special_groupprice` decimal(10,2) DEFAULT NULL,
+  `special_quantity` smallint(6) DEFAULT NULL,
+  `whomodified` varchar(50) NOT NULL,
+  `modified` datetime NOT NULL,
+  PRIMARY KEY (`upc`,`specials_header_id`),
+  KEY `upc` (`upc`),
+  KEY `specials_header_id` (`specials_header_id`),
+  KEY `specials_type_id` (`specials_sourceType_id`),
+  KEY `vendor_id` (`vendor_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;

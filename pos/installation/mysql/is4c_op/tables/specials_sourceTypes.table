@@ -1,0 +1,7 @@
+USE `is4c_op`;
+
+CREATE TABLE `specials_sourceTypes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;

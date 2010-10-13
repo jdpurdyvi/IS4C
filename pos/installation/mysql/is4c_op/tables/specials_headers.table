@@ -1,0 +1,12 @@
+USE `is4c_op`;
+
+CREATE TABLE `specials_headers` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  `start_date` datetime DEFAULT NULL,
+  `end_date` datetime DEFAULT NULL,
+  `specials_posType_id` int(10) unsigned NOT NULL,
+  `whomodified` varchar(50) NOT NULL,
+  `modified` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
