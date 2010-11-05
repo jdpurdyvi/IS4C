@@ -1,0 +1,7 @@
+USE  `is4c_op`;
+
+INSERT INTO `specials_labelTypes` (`id`, `name`) VALUES
+(1, 'Small'),
+(2, 'Large'),
+(4, 'Endcap'),
+(8, 'Case');

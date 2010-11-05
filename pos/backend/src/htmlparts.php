@@ -11,6 +11,7 @@
 			<ul>
 				<li><a href="/item">Item Maintenance</a></li>
 				<li><a href="/batch">Sale Batches</a></li>
+				<li><a href="/specials">Specials</a></li>
 				<li><a href="/label">Label Maker</a></li>
 				<li>Reports</li>
 				<li>Dayend Balancing</li>
