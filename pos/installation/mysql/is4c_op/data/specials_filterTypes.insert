@@ -1,0 +1,5 @@
+USE  `is4c_op`;
+
+INSERT INTO `specials_filterTypes` (`id`, `name`) VALUES
+(1, 'Grocery'),
+(2, 'HBC');
