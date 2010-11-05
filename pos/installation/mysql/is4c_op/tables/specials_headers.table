@@ -6,6 +6,7 @@ CREATE TABLE `specials_headers` (
   `start_date` datetime DEFAULT NULL,
   `end_date` datetime DEFAULT NULL,
   `specials_posType_id` int(10) unsigned NOT NULL,
+  `specials_filterType_id` smallint(5) unsigned NOT NULL,
   `whomodified` varchar(50) NOT NULL,
   `modified` datetime NOT NULL,
   PRIMARY KEY (`id`)
