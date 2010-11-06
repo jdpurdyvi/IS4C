@@ -1,10 +1,11 @@
 <?php
 	/*
-	 * The page is a vertical split. Top half is search/entry, while the lower
-	 * portion is a list.
+	 * The page is a vertical split. 
 	 * 
 	 * Top is either search/entry for a specials_header or specials_products
 	 * Lower is a list of specials_headers or specials_products
+	 * 
+	 * The different filters are setup to accommodate different users
 	 * 
 	 * Designed to fit in a 865px box inside of a POS backend
 	 */
@@ -15,6 +16,11 @@
 	$backoffice['status']=array();
 
 	require_once($_SERVER["DOCUMENT_ROOT"].'/src/htmlparts.php');
+	
+	if (isset($_REQUEST['a']) && $_REQUEST['a']=='addHeader') {
+		require_once('sql/addHeader.php');
+			addHeader($backoffice);
+	}
 	
 	if (isset($_REQUEST['filter'])) {
 		// TODO: Sanitize better, turn into db call
@@ -49,13 +55,16 @@
 	
 	$html.=head();
 	$html.='
-		<link href="screen.css" media="screen" rel="stylesheet" type="text/css"/>
-		<!-- <script src="main.js" type="text/javascript"></script> -->
+		<link href="specials.css" media="screen" rel="stylesheet" type="text/css"/>
+		<script src="specials.js" type="text/javascript"></script>
 		<title>Shelf Audit - Specials</title>
 	</head>
 	<body>';
 	
 	$html.=body();
+	
+	$html.='
+		<div id="page_panel">';
 	
 	$html.=$html_top;
 	$html.=$html_bottom;
@@ -66,6 +75,7 @@
 	}
 	
 	$html.='
+		</div>
 	</body>
 </html>';
 		

@@ -1,0 +1,44 @@
+/*
+ * TODO: Change .form_row class to match class name in /item
+ * TODO: Match layout of /item/item.css better
+ */
+
+FIELDSET>FIELDSET {
+ border: 0;
+ display: inline-block;
+ margin: 0;
+ padding: 0;
+ vertical-align: top;
+}
+
+LABEL {
+ display: inline-block;
+}
+
+FIELDSET+FIELDSET {
+ margin-left: 1em;
+}
+
+.form_row {
+ height: 2em;
+ line-height: 2em;
+ vertical-align: baseline;
+}
+
+INPUT[name="addHeader_name"] {
+}
+
+INPUT[type="date"] {
+ text-align: right;
+ width: 75px;
+}
+
+LABEL[for="addHeader_name"] {
+}
+LABEL[for="addHeader_specials_posType_id"] {
+ width: 195px;
+}
+LABEL[for="addHeader_end_date"],
+LABEL[for="addHeader_start_date"] {
+ width: 75px;
+}
