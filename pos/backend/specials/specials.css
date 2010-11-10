@@ -3,6 +3,11 @@
  * TODO: Match layout of /item/item.css better
  */
 
+TBODY A {
+	font-weight: 900;
+	text-decoration: none;
+}
+
 FIELDSET>FIELDSET {
  border: 0;
  display: inline-block;
@@ -19,13 +24,29 @@ FIELDSET+FIELDSET {
  margin-left: 1em;
 }
 
+TABLE {
+ border-collapse: separate;
+ border-spacing: 0px;
+ padding-top: .5em;
+ width: 100%;
+}
+
+TBODY TD {
+ border-bottom: 1px dashed #CCC;
+}
+
+TFOOT TD {
+ padding-top: .5em;
+}
+
+TH {
+ border-bottom: 1px solid #999;
+}
+
 .form_row {
  height: 2em;
  line-height: 2em;
  vertical-align: baseline;
-}
-
-INPUT[name="addHeader_name"] {
 }
 
 INPUT[type="date"] {
@@ -33,12 +54,13 @@ INPUT[type="date"] {
  width: 75px;
 }
 
-LABEL[for="addHeader_name"] {
-}
-LABEL[for="addHeader_specials_posType_id"] {
+LABEL[for="addHeader_specials_posType_id"],
+LABEL[for="updateHeader_specials_posType_id"] {
  width: 195px;
 }
 LABEL[for="addHeader_end_date"],
-LABEL[for="addHeader_start_date"] {
- width: 75px;
+LABEL[for="addHeader_start_date"],
+LABEL[for="updateHeader_end_date"],
+LABEL[for="updateHeader_start_date"] {
+	 width: 75px;
 }

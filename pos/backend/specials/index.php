@@ -22,6 +22,16 @@
 			addHeader($backoffice);
 	}
 	
+	if (isset($_REQUEST['a']) && $_REQUEST['a']=='deleteHeaders') {
+		require_once('sql/deleteHeaders.php');
+			deleteHeaders($backoffice);
+	}
+	
+	if (isset($_REQUEST['a']) && $_REQUEST['a']=='updateHeader') {
+		require_once('sql/updateHeader.php');
+			updateHeader($backoffice);
+	}
+	
 	if (isset($_REQUEST['filter'])) {
 		// TODO: Sanitize better, turn into db call
 		switch ($_REQUEST['filter']) {
@@ -38,14 +48,7 @@
 		
 		require_once('./filters/'.$specials_filter.'.php');
 	} else {
-		// TODO: Maybe this should be in some filters/main.php?
-		$html_top='
-		<ul>
-			<li><a href="?filter=1">Grocery</a></li>
-			<li><a href="?filter=2">HBC</a></li>
-		</ul>';
-	
-		$html_bottom='';
+		require_once('./filters/default.php');
 	}
 	
 	$html=
