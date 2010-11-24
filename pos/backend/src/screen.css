@@ -82,3 +82,12 @@ UL {
 .textAlignRight {
  text-align: right;
 }
+
+.ul_breadcrumb LI {
+ display: inline-block;
+}
+
+.ul_breadcrumb > LI+LI:before {
+ content: "\2022";
+ padding-right: .33em;
+}

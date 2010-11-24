@@ -43,6 +43,10 @@ TH {
  border-bottom: 1px solid #999;
 }
 
+UL {
+ margin: 0em;
+}
+
 .form_row {
  height: 2em;
  line-height: 2em;

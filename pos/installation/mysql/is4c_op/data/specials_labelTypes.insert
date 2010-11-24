@@ -1,7 +1,7 @@
 USE  `is4c_op`;
 
-INSERT INTO `specials_labelTypes` (`id`, `name`) VALUES
-(1, 'Small'),
-(2, 'Large'),
-(4, 'Endcap'),
-(8, 'Case');
+INSERT INTO `specials_labelTypes` (`id`, `name`, `abbreviation`) VALUES
+(1, 'Small', 'SM'),
+(2, 'Large', 'LG'),
+(4, 'Endcap', 'EC'),
+(8, 'Case', 'CA');

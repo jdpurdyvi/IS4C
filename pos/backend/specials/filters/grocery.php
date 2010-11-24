@@ -21,6 +21,7 @@
 		$view='headers';
 	}
 
+	// Contains SQL functions for specials page
 	require_once($_SERVER["DOCUMENT_ROOT"].'/lib/materialized_specials.php');
 		
 	if ($view=='headers') {
@@ -57,8 +58,23 @@
 			$tEnd_date='';
 		}
 		
-				// Hmm, that's kinda ugly using $tA to define so many DOM elements
+		
+		// Hmm, maybe the switch between view all and view active should be a get variable and not passed through the same deleteproducts form
+		if (isset($_REQUEST['headers']) && $_REQUEST['headers']=='all') {
+			$tHeaders='all';
+			$tHeaders_target='active';
+		} else {
+			$tHeaders='active';
+			$tHeaders_target='all';
+		}
+		
 		$html_top='
+				<ul class="ul_breadcrumb">
+					<li><a href="./?filter=1">Grocery Specials</a></li>
+				</ul>';
+		
+		// Hmm, that's kinda ugly using $tA to define so many DOM elements
+		$html_top.='
 				<form action="./" method="post" name="'.$tA.'Header">
 					<fieldset>
 						<legend>'.ucfirst($tA).' Special</legend>
@@ -115,15 +131,14 @@
 					<tfoot>
 						<tr>
 							<td class="textAlignRight" colspan=5>
-								<input disabled type="button" value="Show All"/>
-								<input disabled type="button" value="Print Specials"/>
+								<input onclick="this.form.headers.value=\''.$tHeaders_target.'\'; this.form.submit();" type="button" value="Show '.ucfirst($tHeaders_target).'"/>
 								<input type="submit" value="Delete Selected"/>
 							</td>
 						</tr>
 					</tfoot>
 					<tbody>';
 		
-		$specialsList_result=get_specialsList($backoffice);
+		$specialsList_result=get_specialsList($backoffice, $tHeaders);
 		while ($row=mysql_fetch_array($specialsList_result)) {
 			$tId=$row['id'];
 			$tName=$row['name'];
@@ -146,16 +161,33 @@
 		
 		$html_bottom.='
 					</tbody>
-					<input type="hidden" name="a" value="deleteHeaders"/>
-					<input type="hidden" name="filter" value="1"/>
-					<input type="hidden" name="v" value="headers"/>
-				</form>
-			</table>';
+				</table>
+				<input type="hidden" name="a" value="deleteHeaders"/>
+				<input type="hidden" name="filter" value="1"/>
+				<input type="hidden" name="v" value="headers"/>
+				<input type="hidden" name="headers" value="'.$tHeaders.'"/>
+			</form>';
 	} else if ($view=='products') {
-		if (isset($_REQUEST['a']) && $_REQUEST['a']=='huh') {
-			$html_top='<p>Still working on this...</p>';
+		// TODO: $_REQUEST['id'] validation
+		require_once($_SERVER["DOCUMENT_ROOT"].'/lib/table_specials_headers.php');
+		$specials_headers_result=get_specials_headers($backoffice, $_REQUEST['id']);
+		if ($specials_headers_result) {
+			$row=mysql_fetch_array($specials_headers_result);	
 		} else {
-			$html_top='
+			// TODO: Send page back?
+		}
+		
+		// TODO: Change filter to db
+		$html_top='
+				<ul class="ul_breadcrumb">
+					<li><a href="./?filter=1">Grocery Specials</a></li>
+					<li><a href="./?filter=1&v=products&id='.$_REQUEST['id'].'">'.$row['name'].'</a>: <em>'.strftime("%F", strtotime($row['start_date'])).' to '.strftime("%F", strtotime($row['end_date'])).'</em></li>
+				</ul>';
+		
+		if (isset($_REQUEST['a']) && $_REQUEST['a']=='searchProducts') {
+			$html_top.='<pre>searchProducts</pre>';
+		} else {
+			$html_top.='
 				<form action="./" method="post" name="searchProducts">
 					<fieldset>
 						<legend>Seach</legend>
@@ -164,18 +196,77 @@
 						<input name="a" type="hidden" value="searchProducts"/>
 						<input name="filter" type="hidden" value="1"/>
 						<input name="v" type="hidden" value="products"/>
+						<input name="id" type="hidden" value="'.$_REQUEST['id'].'"/>
 						<input type="submit" value="Search Products"/>
 					</fieldset>
 				</form>';
 		}
 		
-		$html_bottom='';
+		$html_bottom='			
+				<form action="./" method="post" name="deleteProducts">
+					<table>
+						<thead>
+							<tr>
+								<th>Delete</th>
+								<th>CAP</th>
+								<th>Vendor</th>
+								<th>Item #</th>
+								<th>Description</th>
+								<th>Brand</th>
+								<th>Size</th>
+								<th>Price</th>
+								<th>Promo Price</th>
+								<th>Signs</th>
+							</tr>
+						</thead>
+						<tfoot>
+							<tr>
+								<td class="textAlignRight" colspan=10>
+									<input disabled type="button" value="Print Products"/>
+									<input type="submit" value="Delete Selected"/>
+								</td>
+							</tr>
+						</tfoot>
+						<tbody>';
 		$specialProducts_result=get_specialProducts($backoffice, $_REQUEST['id']);
 		while ($row=mysql_fetch_array($specialProducts_result)) {
-			$html_bottom.=print_r($row,1);
+				// TODO Split on an underscore? Really?
+			$tPK=$row['upc'].'_'.$row['specials_header_id'];
+			$tCAP=($row['specials_sourceType_id']==1?'YES':'NO');
+			$tVendor=$row['vendor_name'];
+			$tItemNumber=''; // TODO
+			$tDescription=$row['description'];
+			$tBrand=$row['brand_name'];
+			$tSize=$row['size'];
+			$tPrice=$row['normal_price'];
+			$tPromoPrice=$row['special_price'];
+			$tSigns=$row['labels']; // TODO - Maybe have columns for each type and enumerate through db?
+
+			$html_bottom.='
+							<tr>
+								<td class="textAlignCenter"><input name="deleteProducts_pk_'.$tPK.'" type="checkbox" value="'.$tPK.'"/></td>
+								<td class="textAlignCenter">'.$tCAP.'</td>
+								<td>'.$tVendor.'</td>
+								<td class="textAlignRight">'.$tItemNumber.'</td>
+								<td>'.$tDescription.'</td>
+								<td>'.$tBrand.'</td>
+								<td class="textAlignRight">'.$tSize.'</td>
+								<td class="textAlignRight">'.$tPrice.'</td>
+								<td class="textAlignRight">'.$tPromoPrice.'</td>
+								<td class="textAlignRight">'.$tSigns.'</td>
+							</tr>';
 		}
-		$html_bottom.='<p>And this too</p>';
+		$html_bottom.='
+						</tbody>
+					</table>
+					<input type="hidden" name="a" value="deleteProducts"/>
+					<input type="hidden" name="filter" value="1"/>
+					<input type="hidden" name="v" value="products"/>
+					<input type="hidden" name="id" value="'.$_REQUEST['id'].'"/>
+				</form>';
+		
 	} else {
+		// TODO Redirect home with error?
 		$html_top='<p>This should never happen</p>';
 		$html_bottom='<p>Ever!</p>';
 	}

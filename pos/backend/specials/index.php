@@ -32,6 +32,16 @@
 			updateHeader($backoffice);
 	}
 	
+	if (isset($_REQUEST['a']) && $_REQUEST['a']=='deleteProducts') {
+		require_once('sql/deleteProducts.php');
+			deleteProducts($backoffice);
+	}
+	
+	if (isset($_REQUEST['a']) && $_REQUEST['a']=='searchProducts') {
+		require_once('sql/searchProducts.php');
+			searchProducts($backoffice);
+	}
+	
 	if (isset($_REQUEST['filter'])) {
 		// TODO: Sanitize better, turn into db call
 		switch ($_REQUEST['filter']) {
@@ -78,9 +88,7 @@
 	}
 	
 	$html.='
-		</div>
-	</body>
-</html>';
+		</div>';
 		
 	$html.=foot();
 	
