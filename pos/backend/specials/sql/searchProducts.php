@@ -27,26 +27,35 @@ LEFT JOIN `is4c_op`.`specials_products` ON `products`.`upc`=`specials_products`.
 LEFT JOIN `is4c_op`.`specials_headers` ON `specials_products`.`specials_header_id`=`specials_headers`.`id`
 LEFT JOIN `is4c_op`.`brands` ON `products`.`brand_id`=`brands`.`id`
 LEFT JOIN `is4c_op`.`vendors` `products_vendors` ON `products`.`vendor_id`=`products_vendors`.`id`
-LEFT JOIN `is4c_op`.`vendors` `specials_products_vendors` ON `specials_products`.`vendor_id`=`specials_products_vendors`.`id`\
+LEFT JOIN `is4c_op`.`vendors` `specials_products_vendors` ON `specials_products`.`vendor_id`=`specials_products_vendors`.`id`
 WHERE `products`.`upc` LIKE \'%'.$_REQUEST['q'].'%\' OR `products`.`description` LIKE \'%'.$_REQUEST['q'].'%\'
 ORDER BY `products`.`upc` DESC LIMIT 25';
 			$result=mysql_query($query, $link);
 			if ($result) {
+				$ret=array();
+				
 				$num_rows=mysql_affected_rows($link);
 				if ($num_rows==0) {
-					// Some type of result
+					return true;
 				} else if ($num_rows==1) {
-					// Some type of result
+					$row=mysql_fetch_assoc($result);
+					array_push($ret, $row);
+					return $ret;
 				} else {
-					// Some type of result
+					while ($row=mysql_fetch_assoc($result)) {
+						array_push($ret, $row);
+					}
+					return $ret;
 				}
 			} else {
 				array_push($backoffice['status'], 'Error with MySQL query: '.mysql_error($link));
 				array_push($backoffice['status'], $query);
+				
+				return false;
 			}
 		} else {
 			array_push($backoffice['status'], 'Error connecting to MySQL');
+			return false;
 		}
-		
 	}
 ?>

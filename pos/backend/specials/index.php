@@ -39,7 +39,8 @@
 	
 	if (isset($_REQUEST['a']) && $_REQUEST['a']=='searchProducts') {
 		require_once('sql/searchProducts.php');
-			searchProducts($backoffice);
+			// Don't search here, wait until filter page
+			// searchProducts($backoffice);
 	}
 	
 	if (isset($_REQUEST['filter'])) {

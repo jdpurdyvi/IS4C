@@ -183,9 +183,16 @@
 					<li><a href="./?filter=1">Grocery Specials</a></li>
 					<li><a href="./?filter=1&v=products&id='.$_REQUEST['id'].'">'.$row['name'].'</a>: <em>'.strftime("%F", strtotime($row['start_date'])).' to '.strftime("%F", strtotime($row['end_date'])).'</em></li>
 				</ul>';
-		
+
 		if (isset($_REQUEST['a']) && $_REQUEST['a']=='searchProducts') {
-			$html_top.='<pre>searchProducts</pre>';
+			$searchProducts_result=searchProducts($backoffice);
+			if ($searchProducts_result) {
+				$html_top.='<p>Searching for '.$_REQUEST['q'].'</p>';
+				$html_top.='<p>Count result = '.count($searchProducts_result).'</p>';
+				$html_top.='<pre>'.print_r($searchProducts_result,1).'</pre>';
+			} else {
+				$html_top.='<p>Error searching for '.$_REQUEST['q'].'</p>';
+			}
 		} else {
 			$html_top.='
 				<form action="./" method="post" name="searchProducts">
@@ -229,6 +236,7 @@
 						</tfoot>
 						<tbody>';
 		$specialProducts_result=get_specialProducts($backoffice, $_REQUEST['id']);
+		// TODO No products found
 		while ($row=mysql_fetch_array($specialProducts_result)) {
 				// TODO Split on an underscore? Really?
 			$tPK=$row['upc'].'_'.$row['specials_header_id'];
