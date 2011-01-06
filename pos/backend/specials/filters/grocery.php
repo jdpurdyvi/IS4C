@@ -187,27 +187,107 @@
 		if (isset($_REQUEST['a']) && $_REQUEST['a']=='searchProducts') {
 			$searchProducts_result=searchProducts($backoffice);
 			if ($searchProducts_result) {
-				$html_top.='<p>Searching for '.$_REQUEST['q'].'</p>';
-				$html_top.='<p>Count result = '.count($searchProducts_result).'</p>';
-				$html_top.='<pre>'.print_r($searchProducts_result,1).'</pre>';
+				if (is_array($searchProducts_result)) {
+					// One result
+					if (count($searchProducts_result)==1) {
+						$tProduct=array_pop($searchProducts_result);
+
+						// Product in current sale 
+						if ($tProduct['specials_headers_id']==$_REQUEST['id']) {
+							// Product edit box with existing information. Same as clicking a product
+							$html_top.='<p>Edit Product!!!</p>';
+							
+						// Product in a different sale
+						} else if (isset($tProduct['specials_header_id'])) {
+							// Import from different sale? Add as new? Remove from other sale?
+							$html_top.='<p>Product in a different sale. Clone? Move? Add as new?</p>'; 
+							
+						// Product not in any sale
+						} else {
+							// Blank product edit box
+							$html_top.='<p>Edit Product!!!</p>';
+						}
+						
+					// Multiple results
+					} else {
+						$html_top.='<ul>';
+						foreach ($searchProducts_result as $tProduct) {
+							$html_top.='<li>'.print_r($tProduct,1).'</li>';
+						}
+						$html_top.='</ul>';
+					}
+				} else {
+					array_push($backoffice['status'], 'No results found for: '.$_REQUEST['q']);
+				}
 			} else {
-				$html_top.='<p>Error searching for '.$_REQUEST['q'].'</p>';
+				// searchProducts() will also return a status message
+				array_push($backoffice['status'], 'Error with query');
 			}
-		} else {
-			$html_top.='
-				<form action="./" method="post" name="searchProducts">
-					<fieldset>
-						<legend>Seach</legend>
-						<label for="searchProducts_q">Item <span class="accesskey">S</span>KU, PLU, UPC or description: </label>
-						<input accesskey="s" id="searchProducts_q" name="q" type="text" value=""/>
-						<input name="a" type="hidden" value="searchProducts"/>
-						<input name="filter" type="hidden" value="1"/>
-						<input name="v" type="hidden" value="products"/>
-						<input name="id" type="hidden" value="'.$_REQUEST['id'].'"/>
-						<input type="submit" value="Search Products"/>
-					</fieldset>
-				</form>';
 		}
+		
+		$html_top.='
+			<form action="./" method="post" name="editProduct">
+				<fieldset>
+					<input name="a" type="hidden" value="editProduct"/>
+					<input name="filter" type="hidden" value="1"/>
+					<input name="v" type="hidden" value="products"/>
+					<input name="id" type="hidden" value="'.$_REQUEST['id'].'"/>
+					<fieldset>
+						<legend>Product Info</legend>
+						<label for="editProduct_upc">UPC</label>
+						<input id="editProduct_upc" name="editProduct_upc" readonly type="text" value="0001254896532"/>
+						<label for="editProduct_sku">SKU</label>
+						<input id="editProduct_sku" name="editProduct_sku" readonly type="text" value="12340-5"/>
+						<label for="editProduct_description">Description</label>
+						<input id="editProduct_description" name="editProduct_description" readonly type="text" value="A demo product description"/>
+						<label for="editProduct_brand">Brand</label>
+						<input id="editProduct_brand" name="editProduct_brand" readonly type="text" value="My Brand!"/>
+						<label for="editProduct_normal_price">Regular Price</label>
+						<input id="editProduct_normal_price" name="editProduct_normal_price" readonly type="text" value="$4.99"/>
+					</fieldset>
+					<fieldset>
+						<legend>Sale Info</legend>
+						<label for="editProduct_special_price"><span class="accesskey">S</span>ale Price</label>
+						<input id="editProduct_special_price" name="editProduct_special_price" type="number" value="3.99"/>
+						<label for="editProduct_vendor"><span class="accesskey">V</span>endor</labe>
+						<select id="editProduct_vendor" name="editProduct_vendor">
+							<option>OMG OPTIONS</option>
+						</select>
+						<fieldset>
+							<legend>Signs</legend>
+							<!-- TODO: Use db to list sign types -->
+							<label>Small</label>
+							<input type="checkbox"/>
+							<label>Large</label>
+							<input type="checkbox"/>
+							<label>Endcap</label>
+							<input type="checkbox"/>
+							<label>Case</label>
+							<input type="checkbox"/>
+						</fieldset>
+						<fieldset>
+							<legend>CAP</legend>
+							<input type="checkbox"/>
+						</fieldset>
+						<input type="submit" value="Add/Modify Product"/>
+					</fieldset>
+				</fieldset>
+			</form>';
+		
+		// Maybe we always want the search box?
+		$html_top.='
+			<form action="./" method="post" name="searchProducts">
+				<fieldset>
+					<legend>Seach</legend>
+					<label for="searchProducts_q">Item <span class="accesskey">S</span>KU, PLU, UPC or description: </label>
+					<input accesskey="s" id="searchProducts_q" name="q" type="text" value=""/>
+					<input name="a" type="hidden" value="searchProducts"/>
+					<input name="filter" type="hidden" value="1"/>
+					<input name="v" type="hidden" value="products"/>
+					<input name="id" type="hidden" value="'.$_REQUEST['id'].'"/>
+					<input type="submit" value="Search Products"/>
+				</fieldset>
+			</form>';
 		
 		$html_bottom='			
 				<form action="./" method="post" name="deleteProducts">

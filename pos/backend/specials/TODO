@@ -1,0 +1,19 @@
+Main page:
+	* Icons for each filter type
+
+v=headers:
+	* Calendar pick dates
+	* Sortable headers
+	* Shrink table of headers to max screen height, tuck scrollbar
+	* Clear form values?
+	a=updateHeader
+		* button to create as new header
+
+v=products:
+	* Sortable headers
+	* Description edits item? Or icon like in headers view?
+	* Print CSS and action
+
+General:
+	* Put header into fixed height box to sticky when viewport scrolls
+	* Handle error messages better
